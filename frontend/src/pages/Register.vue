@@ -47,6 +47,9 @@
 
         <button type="submit">S'inscrire</button>
       </form>
+      <button @click="goToSignIn" style="margin-top: 10px; background: none; border: none; color: #4A9FBF; cursor: pointer; text-decoration: underline; font-size: 0.9rem;">
+        Déjà un compte ? Connectez-vous
+      </button>
 
       <pre v-if="response" class="response-box">{{ response }}</pre>
     </div>
@@ -54,13 +57,19 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { register } from "../api/auth";
+
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
 const role = ref("ADMIN");
 const companyName = ref("");
 const companyAddress = ref("");
+const goToSignIn = () => {
+  router.push({ path: "/signin" });
+};
 const companyPhone = ref("");
 const companyEmail = ref("");
 const companyWebsite = ref("");
@@ -85,6 +94,9 @@ const handleRegister = async () => {
     });
 
     response.value = res.data;
+    // Redirect to sign-in after successful registration so user can log in.
+    // We pass a query param so the sign-in page can optionally show a welcome/confirmation message.
+    router.push({ path: "/signin", query: { registered: "true", role: role.value } });
   } catch (err) {
     response.value = err.response?.data || "Erreur inconnue";
   }
@@ -108,6 +120,21 @@ const handleRegister = async () => {
   overflow-x: hidden;
 }
 
+.register-page::before {
+  /* subtle background image overlay that preserves the gradient color */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('@/assets/cyberparctn.png') no-repeat center center;
+  background-size: cover;
+  opacity: 0.1; /* tweak this to increase/decrease image visibility */
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Boîte d'inscription */
 .register-box {
   background: linear-gradient(145deg, rgba(248, 239, 231, 0.95), rgba(255, 255, 255, 0.9));
@@ -118,7 +145,8 @@ const handleRegister = async () => {
   color: #2C2C2C;
   box-shadow: 0 10px 40px rgba(43, 95, 127, 0.25), 0 0 0 1px rgba(74, 159, 191, 0.1);
   position: relative;
-  backdrop-filter: blur(10px);
+  z-index: 1;
+  backdrop-filter: blur(5px);
   margin: 0 auto;
 }
 

@@ -2,6 +2,7 @@
 <template>
   <div class="login-page">
     <div class="login-box">
+      <div v-if="registeredMessage" class="success-box">{{ registeredMessage }}</div>
       <h1>welcome to cyber park</h1>
       <h2>Sign In</h2>
       <form @submit.prevent="handleLogin">
@@ -15,13 +16,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { login } from "@/api/auth";
 
 const email = ref("");
 const password = ref("");
 const router = useRouter();
+const route = useRoute();
+
+const registeredMessage = computed(() => {
+  return route.query.registered === "true"
+    ? "Inscription réussie. Veuillez vous connecter."
+    : "";
+});
 
 const handleLogin = async () => {
     console.log("clicked");
