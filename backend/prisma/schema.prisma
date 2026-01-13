@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle User : Représente un utilisateur (Admin ou Entreprise)
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   @db.VarChar(255)// Hash du mot de passe (bcrypt)
+  role      Role     @default(COMPANY)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId Int?     @unique
+}
+
+// Modèle Company : Représente une entreprise du Cyberparc
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?  @db.Text
+  address     String?
+  website     String?
+  logoUrl     String?
+  phone       String?
+  sector      String?  // Secteur d'activité
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User?
+}
+
+// TODO: Les modèles Post et Comment seront ajoutés pendant le stage
+// pour implémenter le forum de discussion
+
+// Enum Role : Définit les rôles possibles
+enum Role {
+  ADMIN
+  COMPANY
+}
