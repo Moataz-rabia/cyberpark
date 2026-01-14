@@ -12,7 +12,8 @@ const prisma = require('../config/db');
  * @param {Object} userData - Données de l'utilisateur
  * @returns {Promise<Object>} Utilisateur créé (sans le mot de passe)
  */
-async function register({ email, password, role = 'COMPANY', companyName }) {
+async function register({ email, password, role = 'COMPANY', companyName,
+  companyAddress, companyPhone, companyContactEmail, companyWebsite, companyDescription, companyIndustry }) {
   // 1. Vérifier si l'email existe déjà
   const existingUser = await prisma.user.findUnique({
     where: { email }
@@ -34,15 +35,17 @@ async function register({ email, password, role = 'COMPANY', companyName }) {
 
   // Si c'est une entreprise, créer aussi la company
   if (role === 'COMPANY' && companyName) {
+    // Map frontend company fields to Prisma schema fields
     userData.company = {
       create: {
         name: companyName,
-        address: company.address || null,
-        phone: company.phone || null,
-        email: company.email || null,
-        website: company.website || null,
-          description: company.description || null,
-          industry: company.industry || null
+        address: companyAddress || null,
+        phone: companyPhone || null,
+        website: companyWebsite || null,
+        description: companyDescription || null,
+        // Prisma schema uses 'sector' for industry and 'logoUrl' for a company logo
+        sector: companyIndustry || null,
+        logoUrl: null
       }
     };
   }

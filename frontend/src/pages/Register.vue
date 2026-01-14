@@ -31,7 +31,7 @@
               <input v-model="companyPhone" type="text" placeholder="Téléphone de l'entreprise" />
             </div>
             <div class="form-group">
-              <input v-model="companyEmail" type="email" placeholder="Email de l'entreprise" />
+              <input v-model="companyContactEmail" type="email" placeholder="Email de contact de l'entreprise (optionnel)" />
             </div>
             <div class="form-group">
               <input v-model="companyWebsite" type="url" placeholder="Site web de l'entreprise" />
@@ -71,7 +71,7 @@ const goToSignIn = () => {
   router.push({ path: "/signin" });
 };
 const companyPhone = ref("");
-const companyEmail = ref("");
+const companyContactEmail = ref("");
 const companyWebsite = ref("");
 const companyDescription = ref("");
 const companyIndustry = ref("");
@@ -85,8 +85,8 @@ const handleRegister = async () => {
       role: role.value,
       companyName: companyName.value,
       companyAddress: companyAddress.value,
-      companyPhone: companyPhone.value,
-      companyEmail: companyEmail.value,
+  companyPhone: companyPhone.value,
+  companyContactEmail: companyContactEmail.value,
       companyWebsite: companyWebsite.value,
       companyDescription: companyDescription.value,
       companyIndustry: companyIndustry.value,

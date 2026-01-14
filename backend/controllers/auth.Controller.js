@@ -40,14 +40,17 @@ async function handleRegister(req, res) {
         error: 'Le mot de passe doit contenir au moins 6 caractères'
       });
     }
-
-    // Appel du service
+    /* Appel du service(fi 3odh ma na3ti kan email w password w role w companyName)na3tih kolchi fi body
     const user = await authService.register({
       email,
       password,
       role,
       companyName
-    });
+    });*/
+
+    // Appel du service — passer tout le corps de la requête au service
+    // (le service fera le mapping/whitelist des champs attendus)
+    const user = await authService.register(req.body);
 
     res.status(201).json({
       message: 'Utilisateur créé avec succès',
