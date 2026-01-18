@@ -36,8 +36,19 @@ const handleLogin = async () => {
   const res = await login(email.value, password.value);
   const { token, user } = res.data;
 
+  // Enregistrer token et user dans localStorage
+  // (clé utilisée par App.vue pour afficher la sidebar)
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
+
+  // Notifier l'application dans le même onglet (le navigateur ne déclenche
+  // pas d'événement 'storage' dans le même onglet), pour que la sidebar
+  // apparaisse immédiatement.
+  try {
+    window.dispatchEvent(new Event('authChange'));
+  } catch (e) {
+    // en cas d'erreur, on ignore — rien de critique
+  }
 
   if (user.role === "ADMIN") router.push("/admin");
   else if (user.role === "COMPANY") router.push("/company");

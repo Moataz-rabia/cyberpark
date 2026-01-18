@@ -105,6 +105,7 @@ async function main() {
 
     console.log(`✅ ${user.company.name} créée - Email: ${email} - Pass: ${password}`);
   }
+  // Forum seeding removed to revert project to previous state (no Post/Comment models)
 
   console.log('\n✨ Seeding terminé avec succès !\n');
   console.log('📊 Résumé :');

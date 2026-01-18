@@ -11,7 +11,8 @@ const routes = [
   { path: "/register", component: Register },
   { path: "/admin", component: AdminPage, meta: { requiresAuth: true, role: "ADMIN" } },
   { path: "/company", component: CompanyPage, meta: { requiresAuth: true, role: "COMPANY" } },
-  { path: "/profile", component: ProfilePage, meta: { requiresAuth: true } }
+  { path: "/profile", component: ProfilePage, meta: { requiresAuth: true } },
+  {path: '/forum', component: () => import('@/pages/forum.vue'), meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

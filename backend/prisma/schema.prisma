@@ -22,6 +22,8 @@ model User {
   // Relations
   company   Company? @relation(fields: [companyId], references: [id])
   companyId Int?     @unique
+  posts     Post[]   // Relation ajoutée vers Post
+  comments  Comment[] // Relation ajoutée vers Comment
 }
 
 // Modèle Company : Représente une entreprise du Cyberparc
@@ -41,8 +43,31 @@ model Company {
   user User?
 }
 
-// TODO: Les modèles Post et Comment seront ajoutés pendant le stage
-// pour implémenter le forum de discussion
+// Forum models: Post and Comment
+model Post {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
+  comments  Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
 
 // Enum Role : Définit les rôles possibles
 enum Role {

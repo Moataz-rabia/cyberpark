@@ -1,5 +1,6 @@
 <template>
   <div style="max-width:400px;margin:40px auto;">
+    <sidebar />
     <h2>Test Profil (GET /me)</h2>
 
     <button @click="loadProfile">Charger mon profil</button>
@@ -12,7 +13,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { getMe } from "../api/auth";
-
+import Sidebar from "../components/sidebar.vue";
 const response = ref(null);
 const router = useRouter();
 
